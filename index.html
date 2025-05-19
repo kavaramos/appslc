@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Veículos</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Menu Lateral -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="logo lc-laranja.png" alt="Logo LC" class="logo-img">
+            </div>
+            <div class="menu">
+                <div class="menu-section">
+                    <div class="menu-title">Menu</div>
+                    <ul>
+                        <li class="active" onclick="window.location.href='index.html'">
+                            <a href="index.html">Dashboard</a>
+                        </li>
+                        <li onclick="window.location.href='pedidos.html'">
+                            <a href="pedidos.html">Pedidos</a>
+                        </li>
+                        <li onclick="window.location.href='trabalho.html'">
+                            <a href="trabalho.html">Área de Trabalho</a>
+                        </li>
+                        <li onclick="window.location.href='liberacao-backlog.html'">
+                            <a href="liberacao-backlog.html">Backlog de Liberação</a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="menu-section">
+                    <div class="menu-title">Configurações</div>
+                    <ul>
+                        <li onclick="window.location.href='configuracoes-responsaveis.html'">
+                            <a href="configuracoes-responsaveis.html">Responsáveis</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <main class="content">
+            <!-- Cards Superiores -->
+            <section class="status-cards">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="card-info">
+                        <h3>Total de Pedidos</h3>
+                        <p class="count" id="total-pedidos">0</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="card-info">
+                        <h3>Total de Veículos</h3>
+                        <p class="count" id="total-veiculos">0</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="card-info">
+                        <h3>Em Progresso</h3>
+                        <p class="count" id="em-progresso">0</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-hourglass-half"></i>
+                    </div>
+                    <div class="card-info">
+                        <h3>Prontos para Liberação</h3>
+                        <p class="count" id="prontos-liberacao">0</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="card-info">
+                        <h3>Liberados</h3>
+                        <p class="count" id="liberados">0</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Barra de Status Horizontal -->
+            <section class="status-bar-container">
+                <h2>Status dos Veículos</h2>
+                <div class="status-bar">
+                    <div class="status-segment" id="status-kit-despachante" data-status="Kit Despachante">
+                        <div class="status-content">
+                            <span class="status-label">Kit Despachante</span>
+                            <span class="status-count">0</span>
+                        </div>
+                    </div>
+                    <div class="status-segment" id="status-fiscal" data-status="Fiscal">
+                        <div class="status-content">
+                            <span class="status-label">Fiscal</span>
+                            <span class="status-count">0</span>
+                        </div>
+                    </div>
+                    <div class="status-segment" id="status-documentos" data-status="Documentos">
+                        <div class="status-content">
+                            <span class="status-label">Documentos</span>
+                            <span class="status-count">0</span>
+                        </div>
+                    </div>
+                    <div class="status-segment" id="status-licencas" data-status="Licenças">
+                        <div class="status-content">
+                            <span class="status-label">Licenças</span>
+                            <span class="status-count">0</span>
+                        </div>
+                    </div>
+                    <div class="status-segment" id="status-patio" data-status="Patio">
+                        <div class="status-content">
+                            <span class="status-label">Patio</span>
+                            <span class="status-count">0</span>
+                        </div>
+                    </div>
+                    <div class="status-segment" id="status-manutencao" data-status="Manutenção">
+                        <div class="status-content">
+                            <span class="status-label">Manutenção</span>
+                            <span class="status-count">0</span>
+                        </div>
+                    </div>
+                    <div class="status-segment" id="status-gris" data-status="GRIS">
+                        <div class="status-content">
+                            <span class="status-label">GRIS</span>
+                            <span class="status-count">0</span>
+                        </div>
+                    </div>
+                    <div class="status-segment" id="status-pronto" data-status="Pronto para Liberação">
+                        <div class="status-content">
+                            <span class="status-label">Pronto</span>
+                            <span class="status-count">0</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Conteúdo em Duas Colunas -->
+            <div class="two-column-layout">
+                <!-- Sessão de Pedidos -->
+                <section class="pedidos-section">
+                    <div class="header-actions">
+                        <h2>Pedidos</h2>
+                        <div class="header-controls">
+                            <div class="search-bar">
+                                <input type="text" id="search-pedidos" placeholder="Buscar pedido...">
+                            </div>
+                            <div class="sort-options">
+                                <select id="sort-pedidos">
+                                    <option value="data">Data de Cadastro</option>
+                                    <option value="progresso">Progresso</option>
+                                </select>
+                            </div>
+                            <button class="add-button" id="btnNovoPedido" onclick="window.location.href='cadastro-pedido.html'">
+                                Cadastrar Pedido
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pedidos-grid" id="pedidos-container">
+                        <!-- Pedidos serão inseridos aqui via JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Sessão de Veículos -->
+                <section class="veiculos-section">
+                    <div class="header-actions">
+                        <h2>Veículos</h2>
+                        <div class="header-controls">
+                            <div class="search-bar">
+                                <input type="text" id="search-veiculos" placeholder="Buscar veículo...">
+                            </div>
+                            <div class="sort-options">
+                                <select id="filter-status-veiculos">
+                                    <option value="">Todos os Status</option>
+                                    <option value="Kit Despachante">Kit Despachante</option>
+                                    <option value="Fiscal">Fiscal</option>
+                                    <option value="Documentos">Documentos</option>
+                                    <option value="Licenças">Licenças</option>
+                                    <option value="Patio">Patio</option>
+                                    <option value="Manutenção">Manutenção</option>
+                                    <option value="GRIS">GRIS</option>
+                                    <option value="Pronto para Liberação">Pronto para Liberação</option>
+                                    <option value="Liberado">Liberado</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="veiculos-list" id="veiculos-container">
+                        <!-- Veículos serão inseridos aqui via JavaScript -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para criação de pedido -->
+    <div class="modal" id="pedidoModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Cadastrar Novo Pedido</h2>
+            <form id="pedidoForm">
+                <div class="form-group">
+                    <label for="numeroPedido">Número do Pedido</label>
+                    <input type="text" id="numeroPedido" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantidadeVeiculos">Quantidade de Veículos</label>
+                    <input type="number" id="quantidadeVeiculos" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="tipoVeiculo">Tipo de Veículo</label>
+                    <select id="tipoVeiculo" required>
+                        <option value="">Selecione...</option>
+                        <option value="Cavalo">Cavalo</option>
+                        <option value="Carreta">Carreta</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tipoTransacao">Tipo de Transação</label>
+                    <select id="tipoTransacao" required>
+                        <option value="">Selecione...</option>
+                        <option value="Compra">Compra</option>
+                        <option value="Venda">Venda</option>
+                    </select>
+                </div>
+                
+                <h3>Formalização da Compra</h3>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="assinaturaContrato">
+                        Assinatura do Contrato e Recebimento NF
+                    </label>
+                    <div id="uploaderContainer" class="hidden">
+                        <input type="file" id="contratoAnexo">
+                    </div>
+                </div>
+                <div class="form-group hidden" id="gravameGroup">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="gravameBaixado">
+                        Gravame Baixado
+                    </label>
+                </div>
+                <div class="form-group hidden" id="renavGroup">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="cadastroRENAV">
+                        Cadastro no RENAV
+                    </label>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Cadastrar Pedido</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para detalhes do pedido -->
+    <div class="modal" id="detalhePedidoModal">
+        <div class="modal-content modal-lg">
+            <span class="close-modal">&times;</span>
+            <h2>Detalhes do Pedido <span id="detalheNumeroPedido"></span></h2>
+            <div class="pedido-info">
+                <div class="info-group">
+                    <span class="info-label">Tipo de Veículo:</span>
+                    <span id="detalheTipoVeiculo"></span>
+                </div>
+                <div class="info-group">
+                    <span class="info-label">Tipo de Transação:</span>
+                    <span id="detalheTipoTransacao"></span>
+                </div>
+                <div class="info-group">
+                    <span class="info-label">Status:</span>
+                    <span id="detalheStatus"></span>
+                </div>
+                <div class="info-group">
+                    <span class="info-label">Data de Cadastro:</span>
+                    <span id="detalheDataCadastro"></span>
+                </div>
+            </div>
+            
+            <h3>Veículos do Pedido</h3>
+            <div id="detalheVeiculosList" class="veiculos-list">
+                <!-- Lista de veículos do pedido -->
+            </div>
+            
+            <div class="form-actions">
+                <button id="btnFinalizarPedido" class="btn-primary">Finalizar Pedido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts em ordem precisa para garantir a correta inicialização -->
+    <script src="js/utils.js"></script>
+    <script src="js/status.js"></script>
+    <script src="js/veiculos.js"></script>
+    <script src="js/pedidos.js"></script>
+    <script src="js/main.js"></script>
+    
+    <!-- Script simples para garantir a inicialização correta -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar elementos críticos da interface
+            const elementosCriticos = [
+                'total-pedidos', 'total-veiculos', 'em-progresso', 
+                'prontos-liberacao', 'liberados',
+                'status-kit-despachante', 'status-fiscal', 'status-documentos', 
+                'status-licencas', 'status-patio', 'status-manutencao', 
+                'status-gris', 'status-pronto'
+            ];
+            
+            // Verificar se todos os elementos existem
+            const elementosFaltando = elementosCriticos.filter(id => !document.getElementById(id));
+            if (elementosFaltando.length > 0) {
+                console.warn('Elementos críticos não encontrados:', elementosFaltando);
+            }
+            
+            // Pequeno delay para garantir que todos os scripts foram carregados
+            setTimeout(function() {
+                try {
+                    // Inicializar e atualizar contadores
+                    if (typeof updateStatusCounts === 'function') {
+                        updateStatusCounts();
+                    }
+                    
+                    // Atualizar listas na dashboard
+                    if (document.getElementById('pedidos-container') && document.getElementById('veiculos-container')) {
+                        if (typeof updatePedidosList === 'function') {
+                            updatePedidosList();
+                        } else if (typeof atualizarListaPedidos === 'function') {
+                            atualizarListaPedidos();
+                        }
+                        
+                        if (typeof updateVeiculosList === 'function') {
+                            updateVeiculosList();
+                        } else if (typeof atualizarListaVeiculos === 'function') {
+                            atualizarListaVeiculos();
+                        }
+                    }
+                    
+                    // Verificar se os contadores foram atualizados corretamente
+                    setTimeout(function() {
+                        const contadoresZerados = elementosCriticos
+                            .filter(id => {
+                                const el = document.getElementById(id);
+                                return el && (el.textContent === '0' || 
+                                    (el.querySelector('.status-count') && 
+                                     el.querySelector('.status-count').textContent === '0'));
+                            });
+                            
+                        // Se houver dados no localStorage mas os contadores estiverem zerados,
+                        // tentar atualizar novamente
+                        const temDados = JSON.parse(localStorage.getItem('veiculos') || '[]').length > 0;
+                        if (temDados && contadoresZerados.length > 0) {
+                            console.warn('Detectados contadores não atualizados:', contadoresZerados);
+                            console.warn('Forçando nova atualização...');
+                            
+                            if (typeof updateStatusCounts === 'function') {
+                                updateStatusCounts();
+                            }
+                        }
+                    }, 300);
+                } catch (e) {
+                    console.error('Erro durante a inicialização da dashboard:', e);
+                }
+            }, 150);
+        });
+    </script>
+</body>
+</html> 

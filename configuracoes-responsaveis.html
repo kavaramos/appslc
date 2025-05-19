@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Veículos - Configuração de Responsáveis</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/configuracoes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .responsaveis-container {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .page-title {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .page-title h1 {
+            font-size: 24px;
+            color: var(--secondary-color);
+            margin: 0;
+        }
+        
+        .btn-voltar {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .btn-voltar:hover {
+            background-color: var(--gray-light);
+            color: var(--secondary-color);
+        }
+        
+        .responsaveis-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .responsaveis-table th {
+            text-align: left;
+            padding: 12px;
+            background-color: var(--gray-light);
+            border-bottom: 2px solid var(--border-color);
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+        
+        .responsaveis-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+        
+        .responsaveis-table tr:hover {
+            background-color: var(--gray-light);
+        }
+        
+        .responsaveis-table input[type="text"],
+        .responsaveis-table input[type="email"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--gray-medium);
+            border-radius: var(--radius);
+            font-size: 14px;
+        }
+        
+        .responsaveis-table input[type="text"]:focus,
+        .responsaveis-table input[type="email"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        .toggle-notificacao {
+            position: relative;
+            display: inline-block;
+            width: 46px;
+            height: 24px;
+        }
+        
+        .toggle-notificacao input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--gray-medium);
+            transition: .3s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--secondary-color);
+            border: 1px solid var(--secondary-color);
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--gray-light);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .etapa-cell {
+            font-weight: 500;
+            color: var(--secondary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .responsaveis-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="logo lc-laranja.png" alt="Logo LC" class="logo-img">
+            </div>
+            <div class="menu">
+                <div class="menu-section">
+                    <div class="menu-title">Menu</div>
+                    <ul>
+                        <li onclick="window.location.href='index.html'">
+                            <span>Dashboard</span>
+                        </li>
+                        <li onclick="window.location.href='pedidos.html'">
+                            <span>Pedidos</span>
+                        </li>
+                        <li onclick="window.location.href='trabalho.html'">
+                            <span>Área de Trabalho</span>
+                        </li>
+                        <li onclick="window.location.href='liberacao-backlog.html'">
+                            <span>Backlog de Liberação</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="menu-section">
+                    <div class="menu-title">Configurações</div>
+                    <ul>
+                        <li class="active" onclick="window.location.href='configuracoes-responsaveis.html'">
+                            <span>Responsáveis</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <div class="responsaveis-container">
+                <div class="page-title">
+                    <h1>Configuração de Responsáveis e Notificações</h1>
+                    <button class="btn-voltar" onclick="window.location.href='index.html'">
+                        <i class="fas fa-arrow-left"></i> Voltar
+                    </button>
+                </div>
+                
+                <form id="responsaveisForm">
+                    <table class="responsaveis-table">
+                        <thead>
+                            <tr>
+                                <th>Etapa</th>
+                                <th>Responsável</th>
+                                <th>Email</th>
+                                <th>Notificações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="etapa-cell">Kit Despachante</td>
+                                <td><input type="text" name="responsavel_kitDespachante" id="responsavel_kitDespachante" placeholder="Nome do responsável"></td>
+                                <td><input type="email" name="email_kitDespachante" id="email_kitDespachante" placeholder="email@exemplo.com"></td>
+                                <td>
+                                    <label class="toggle-notificacao">
+                                        <input type="checkbox" name="notificacao_kitDespachante" id="notificacao_kitDespachante" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="etapa-cell">Fiscal</td>
+                                <td><input type="text" name="responsavel_fiscal" id="responsavel_fiscal" placeholder="Nome do responsável"></td>
+                                <td><input type="email" name="email_fiscal" id="email_fiscal" placeholder="email@exemplo.com"></td>
+                                <td>
+                                    <label class="toggle-notificacao">
+                                        <input type="checkbox" name="notificacao_fiscal" id="notificacao_fiscal" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="etapa-cell">Documentos</td>
+                                <td><input type="text" name="responsavel_documentos" id="responsavel_documentos" placeholder="Nome do responsável"></td>
+                                <td><input type="email" name="email_documentos" id="email_documentos" placeholder="email@exemplo.com"></td>
+                                <td>
+                                    <label class="toggle-notificacao">
+                                        <input type="checkbox" name="notificacao_documentos" id="notificacao_documentos" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="etapa-cell">Licenças</td>
+                                <td><input type="text" name="responsavel_licencas" id="responsavel_licencas" placeholder="Nome do responsável"></td>
+                                <td><input type="email" name="email_licencas" id="email_licencas" placeholder="email@exemplo.com"></td>
+                                <td>
+                                    <label class="toggle-notificacao">
+                                        <input type="checkbox" name="notificacao_licencas" id="notificacao_licencas" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="etapa-cell">Pátio</td>
+                                <td><input type="text" name="responsavel_patio" id="responsavel_patio" placeholder="Nome do responsável"></td>
+                                <td><input type="email" name="email_patio" id="email_patio" placeholder="email@exemplo.com"></td>
+                                <td>
+                                    <label class="toggle-notificacao">
+                                        <input type="checkbox" name="notificacao_patio" id="notificacao_patio" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="etapa-cell">Manutenção</td>
+                                <td><input type="text" name="responsavel_manutencao" id="responsavel_manutencao" placeholder="Nome do responsável"></td>
+                                <td><input type="email" name="email_manutencao" id="email_manutencao" placeholder="email@exemplo.com"></td>
+                                <td>
+                                    <label class="toggle-notificacao">
+                                        <input type="checkbox" name="notificacao_manutencao" id="notificacao_manutencao" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="etapa-cell">GRIS</td>
+                                <td><input type="text" name="responsavel_gris" id="responsavel_gris" placeholder="Nome do responsável"></td>
+                                <td><input type="email" name="email_gris" id="email_gris" placeholder="email@exemplo.com"></td>
+                                <td>
+                                    <label class="toggle-notificacao">
+                                        <input type="checkbox" name="notificacao_gris" id="notificacao_gris" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="etapa-cell">Liberação</td>
+                                <td><input type="text" name="responsavel_liberacao" id="responsavel_liberacao" placeholder="Nome do responsável"></td>
+                                <td><input type="email" name="email_liberacao" id="email_liberacao" placeholder="email@exemplo.com"></td>
+                                <td>
+                                    <label class="toggle-notificacao">
+                                        <input type="checkbox" name="notificacao_liberacao" id="notificacao_liberacao" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="btnCancelar">Cancelar</button>
+                        <button type="submit" class="btn-primary">Salvar Configurações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/configuracoes-responsaveis.js"></script>
+</body>
+</html> 

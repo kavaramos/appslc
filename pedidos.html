@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Veículos - Pedidos</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/pedidos-page.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="logo lc-laranja.png" alt="Logo LC" class="logo-img">
+            </div>
+            <div class="menu">
+                <div class="menu-section">
+                    <div class="menu-title">Menu</div>
+                    <ul>
+                        <li onclick="window.location.href='index.html'">
+                            <span>Dashboard</span>
+                        </li>
+                        <li class="active" onclick="window.location.href='pedidos.html'">
+                            <span>Pedidos</span>
+                        </li>
+                        <li onclick="window.location.href='trabalho.html'">
+                            <span>Área de Trabalho</span>
+                        </li>
+                        <li onclick="window.location.href='liberacao-backlog.html'">
+                            <span>Backlog de Liberação</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="menu-section">
+                    <div class="menu-title">Configurações</div>
+                    <ul>
+                        <li onclick="window.location.href='configuracoes-responsaveis.html'">
+                            <span>Responsáveis</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Filtros e Ações -->
+            <div class="filters-container">
+                <div class="filters">
+                    <div class="date-filter">
+                        <label>De:</label>
+                        <input type="date" id="data-inicio">
+                    </div>
+                    <div class="date-filter">
+                        <label>Até:</label>
+                        <input type="date" id="data-fim">
+                    </div>
+                    <div class="search-bar">
+                        <input type="text" id="search-pedidos-page" placeholder="Buscar pedidos...">
+                    </div>
+                </div>
+                <div class="actions">
+                    <button id="btn-novo-pedido-page" class="add-button" onclick="window.location.href='cadastro-pedido.html'">
+                        Cadastrar Pedido
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lista de Pedidos -->
+            <div class="pedidos-page-container">
+                <div class="pedidos-grid" id="pedidos-page-list">
+                    <!-- Pedidos serão inseridos via JavaScript -->
+                </div>
+            </div>
+
+            <!-- Detalhes do Pedido -->
+            <div class="pedido-detail-panel hidden" id="pedido-detail-panel">
+                <div class="panel-header">
+                    <h2 id="pedido-detail-title">Detalhes do Pedido #123</h2>
+                    <button class="close-panel" id="close-pedido-panel">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="panel-content">
+                    <div class="pedido-info">
+                        <div class="info-row">
+                            <div class="info-group">
+                                <label>Número do Pedido:</label>
+                                <div id="detail-numero-pedido">123</div>
+                            </div>
+                            <div class="info-group">
+                                <label>Tipo de Veículo:</label>
+                                <div id="detail-tipo-veiculo">Utilitário</div>
+                            </div>
+                            <div class="info-group">
+                                <label>Tipo de Transação:</label>
+                                <div id="detail-tipo-transacao">Venda</div>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-group">
+                                <label>Data de Cadastro:</label>
+                                <div id="detail-data-cadastro">01/05/2023</div>
+                            </div>
+                            <div class="info-group">
+                                <label>Quantidade de Veículos:</label>
+                                <div id="detail-qtd-veiculos">5</div>
+                            </div>
+                            <div class="info-group">
+                                <label>Veículos Liberados:</label>
+                                <div id="detail-veiculos-liberados">3/5</div>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-group">
+                                <label>Contrato Assinado:</label>
+                                <div id="detail-contrato-assinado">Sim</div>
+                            </div>
+                            <div class="info-group">
+                                <label>Gravame Baixado:</label>
+                                <div id="detail-gravame-baixado">Não</div>
+                            </div>
+                            <div class="info-group">
+                                <label>Cadastro RENAV:</label>
+                                <div id="detail-cadastro-renav">Sim</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pedido-actions-panel">
+                        <button class="btn-editar-pedido-detail" id="btn-editar-pedido-detail">
+                            <i class="fas fa-edit"></i> Editar Pedido
+                        </button>
+                        <button class="btn-excluir-pedido-detail" id="btn-excluir-pedido-detail">
+                            <i class="fas fa-trash"></i> Excluir Pedido
+                        </button>
+                    </div>
+
+                    <div class="panel-veiculos">
+                        <h3>Veículos do Pedido</h3>
+                        <div class="veiculos-filter">
+                            <input type="text" id="search-veiculos-pedido" placeholder="Filtrar veículos...">
+                            <select id="filter-status-veiculos-pedido">
+                                <option value="">Todos os Status</option>
+                                <option value="Kit Despachante">Kit Despachante</option>
+                                <option value="Fiscal">Fiscal</option>
+                                <option value="Documentos">Documentos</option>
+                                <option value="Licenças">Licenças</option>
+                                <option value="Patio">Patio</option>
+                                <option value="Manutenção">Manutenção</option>
+                                <option value="GRIS">GRIS</option>
+                                <option value="Pronto para Liberação">Pronto</option>
+                                <option value="Liberado">Liberado</option>
+                            </select>
+                        </div>
+                        <div class="veiculos-list" id="veiculos-pedido-container">
+                            <!-- Veículos do pedido serão inseridos via JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Cadastro/Edição de Pedido -->
+    <div class="modal" id="pedidoModal">
+        <div class="modal-content modal-md">
+            <div class="modal-header">
+                <h2>Cadastrar Novo Pedido</h2>
+                <span class="close-modal" onclick="closeModal('pedidoModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="pedidoForm">
+                    <div class="form-group">
+                        <label for="numeroPedido">Número do Pedido</label>
+                        <input type="text" id="numeroPedido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantidadeVeiculos">Quantidade de Veículos</label>
+                        <input type="number" id="quantidadeVeiculos" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipoVeiculo">Tipo de Veículo</label>
+                        <select id="tipoVeiculo" required>
+                            <option value="">Selecione...</option>
+                            <option value="Carreta">Carreta</option>
+                            <option value="Cavalo">Cavalo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipoTransacao">Tipo de Transação</label>
+                        <select id="tipoTransacao" required>
+                            <option value="">Selecione...</option>
+                            <option value="Compra">Compra</option>
+                            <option value="Venda">Venda</option>
+                            <option value="Leasing">Leasing</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="assinaturaContrato">Contrato Assinado</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="assinaturaContrato">
+                            <label for="assinaturaContrato"></label>
+                        </div>
+                    </div>
+                    <div class="form-group hidden" id="uploaderContainer">
+                        <label>Anexar Contrato</label>
+                        <div class="uploader">
+                            <button type="button" id="uploaderBtn">Selecionar Arquivo</button>
+                            <span id="fileName">Nenhum arquivo selecionado</span>
+                        </div>
+                    </div>
+                    <div class="form-group hidden" id="gravameGroup">
+                        <label for="gravameBaixado">Gravame Baixado</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="gravameBaixado">
+                            <label for="gravameBaixado"></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cadastroRENAV">Cadastro RENAV</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="cadastroRENAV">
+                            <label for="cadastroRENAV"></label>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal('pedidoModal')">Cancelar</button>
+                        <button type="submit" class="btn-primary">Cadastrar Pedido</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Cadastro/Edição de Veículo -->
+    <div class="modal" id="veiculoModal">
+        <div class="modal-content modal-md">
+            <div class="modal-header">
+                <h2>Cadastrar Novo Veículo</h2>
+                <span class="close-modal" onclick="closeModal('veiculoModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="veiculoForm">
+                    <div class="form-group">
+                        <label for="sequencialVeiculo">Sequencial</label>
+                        <input type="number" id="sequencialVeiculo" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="identificacaoVeiculo">Identificação</label>
+                        <input type="text" id="identificacaoVeiculo" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal('veiculoModal')">Cancelar</button>
+                        <button type="submit" class="btn-primary">Cadastrar Veículo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/pedidos.js"></script>
+    <script src="js/veiculos.js"></script>
+    <script src="js/status.js"></script>
+    <script src="js/pedidosPage.js"></script>
+</body>
+</html> 

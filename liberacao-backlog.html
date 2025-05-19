@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Veículos - Backlog de Liberação</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/liberacao-backlog.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="logo lc-laranja.png" alt="Logo LC" class="logo-img">
+            </div>
+            <div class="menu">
+                <div class="menu-section">
+                    <div class="menu-title">Menu</div>
+                    <ul>
+                        <li onclick="window.location.href='index.html'">
+                            <span>Dashboard</span>
+                        </li>
+                        <li onclick="window.location.href='pedidos.html'">
+                            <span>Pedidos</span>
+                        </li>
+                        <li onclick="window.location.href='trabalho.html'">
+                            <span>Área de Trabalho</span>
+                        </li>
+                        <li class="active" onclick="window.location.href='liberacao-backlog.html'">
+                            <span>Backlog de Liberação</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="menu-section">
+                    <div class="menu-title">Configurações</div>
+                    <ul>
+                        <li onclick="window.location.href='configuracoes-responsaveis.html'">
+                            <span>Responsáveis</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Cabeçalho da página -->
+            <div class="page-header">
+                <h1>Backlog de Liberação</h1>
+                <div class="page-description">
+                    Veículos prontos para serem liberados após concluir todas as etapas.
+                </div>
+            </div>
+
+            <!-- Filtros e Ações -->
+            <div class="filters-container">
+                <div class="filters">
+                    <div class="date-filter">
+                        <label>De:</label>
+                        <input type="date" id="data-inicio">
+                    </div>
+                    <div class="date-filter">
+                        <label>Até:</label>
+                        <input type="date" id="data-fim">
+                    </div>
+                    <div class="search-bar">
+                        <input type="text" id="search-liberacao" placeholder="Buscar veículos...">
+                    </div>
+                </div>
+                <div class="actions">
+                    <button id="btn-atualizar" class="refresh-button">
+                        <i class="fas fa-sync-alt"></i> Atualizar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lista de Veículos para Liberação -->
+            <div class="liberacao-container">
+                <div class="card-grid" id="veiculos-liberacao-grid">
+                    <!-- Veículos serão inseridos via JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação de Liberação -->
+    <div class="modal" id="confirmacaoModal">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h2>Confirmar Liberação</h2>
+                <span class="close-modal" id="close-confirmacao-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Você tem certeza que deseja liberar o veículo <span id="veiculo-liberacao-label"></span>?</p>
+                <p>Essa ação não pode ser desfeita.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="btn-cancelar-liberacao">Cancelar</button>
+                <button class="btn-primary" id="btn-confirmar-liberacao">Confirmar Liberação</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Progresso de Download -->
+    <div class="modal" id="downloadModal">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h2>Preparando Download</h2>
+            </div>
+            <div class="modal-body">
+                <div class="download-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="download-progress-fill"></div>
+                    </div>
+                    <div class="progress-text" id="download-progress-text">0%</div>
+                </div>
+                <p id="download-status-text">Preparando arquivos para download...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/veiculos.js"></script>
+    <script src="js/jszip.min.js"></script>
+    <script src="js/liberacao-backlog.js"></script>
+</body>
+</html>

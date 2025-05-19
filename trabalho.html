@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Veículos - Área de Trabalho</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/trabalho.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/patio-custom.css">
+    <link rel="stylesheet" href="css/manutencao-custom.css">
+    <link rel="stylesheet" href="css/liberacao-custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="logo lc-laranja.png" alt="Logo LC" class="logo-img">
+            </div>
+            <div class="menu">
+                <div class="menu-section">
+                    <div class="menu-title">Menu</div>
+                    <ul>
+                        <li onclick="window.location.href='index.html'">
+                            <span>Dashboard</span>
+                        </li>
+                        <li onclick="window.location.href='pedidos.html'">
+                            <span>Pedidos</span>
+                        </li>
+                        <li class="active" onclick="window.location.href='trabalho.html'">
+                            <span>Área de Trabalho</span>
+                        </li>
+                        <li onclick="window.location.href='liberacao-backlog.html'">
+                            <span>Backlog de Liberação</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="menu-section">
+                    <div class="menu-title">Configurações</div>
+                    <ul>
+                        <li onclick="window.location.href='configuracoes-responsaveis.html'">
+                            <span>Responsáveis</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content trabalho-content">
+            <!-- Backlog Sidebar -->
+            <div class="backlog-sidebar">
+                <div class="backlog-header">
+                    <h2>Backlog de Trabalho</h2>
+                    
+                    <!-- Contadores de itens pendentes -->
+                    <div class="backlog-counters">
+                        <div class="counter-item">
+                            <div class="counter-label">Veículos Pendentes</div>
+                            <div class="counter-value" id="contador-veiculos">0</div>
+                        </div>
+                        <div class="counter-item">
+                            <div class="counter-label">Pedidos Pendentes</div>
+                            <div class="counter-value" id="contador-pedidos">0</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Filtro de status -->
+                    <div class="backlog-filter">
+                        <label for="filter-backlog" class="filter-label">Filtrar por Status:</label>
+                        <select id="filter-backlog">
+                            <option value="todos">Todos os Status</option>
+                            <option value="kitDespachante">Kit Despachante</option>
+                            <option value="fiscal">Fiscal</option>
+                            <option value="documentos">Documentos</option>
+                            <option value="licencas">Licenças</option>
+                            <option value="patio">Pátio</option>
+                            <option value="manutencao">Manutenção</option>
+                            <option value="gris">GRIS</option>
+                            <option value="pronto">Pronto para Liberação</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Filtro de data -->
+                    <div class="backlog-filter date-filter">
+                        <label for="date-from" class="filter-label">Data inicial:</label>
+                        <input type="date" id="date-from">
+                    </div>
+                    <div class="backlog-filter date-filter">
+                        <label for="date-to" class="filter-label">Data final:</label>
+                        <input type="date" id="date-to">
+                    </div>
+                    
+                    <!-- Busca -->
+                    <div class="backlog-search">
+                        <input type="text" id="search-backlog" placeholder="Buscar por ID, placa, pedido...">
+                    </div>
+                </div>
+                
+                <div class="backlog-list" id="backlog-items">
+                    <!-- Veículos e pedidos do backlog serão adicionados aqui via JavaScript -->
+                </div>
+            </div>
+
+            <!-- Main Work Area -->
+            <div class="work-area">
+                <!-- Veiculo Info Header -->
+                <div class="veiculo-header" id="veiculo-header">
+                    <div class="veiculo-info">
+                        <h1 id="veiculo-titulo">Veículo #123-1</h1>
+                        <div class="veiculo-meta">
+                            <span class="veiculo-pedido" id="veiculo-pedido">Pedido: #123</span>
+                            <span class="separator">|</span>
+                            <span class="veiculo-tipo" id="veiculo-tipo">Caminhão / Venda</span>
+                            <span class="separator">|</span>
+                            <span class="veiculo-placa" id="veiculo-placa">Placa: ABC1234</span>
+                        </div>
+                    </div>
+                    <div class="veiculo-actions">
+                        <button class="btn-voltar" id="btn-voltar-dashboard">
+                            <i class="fas fa-arrow-left"></i> Voltar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Progress Tabs -->
+                <div class="progress-tabs">
+                    <div class="tab" data-tab="kitDespachante" id="tab-kitDespachante">
+                        <div class="tab-icon"><i class="fas fa-file-contract"></i></div>
+                        <div class="tab-label">Kit Despachante</div>
+                        <div class="tab-status"><i class="fas fa-check-circle"></i></div>
+                    </div>
+                    <div class="tab" data-tab="fiscal" id="tab-fiscal">
+                        <div class="tab-icon"><i class="fas fa-balance-scale"></i></div>
+                        <div class="tab-label">Fiscal</div>
+                        <div class="tab-status"><i class="fas fa-circle"></i></div>
+                    </div>
+                    <div class="tab" data-tab="documentos" id="tab-documentos">
+                        <div class="tab-icon"><i class="fas fa-file-alt"></i></div>
+                        <div class="tab-label">Documentos</div>
+                        <div class="tab-status"><i class="fas fa-circle"></i></div>
+                    </div>
+                    <div class="tab" data-tab="licencas" id="tab-licencas">
+                        <div class="tab-icon"><i class="fas fa-id-card"></i></div>
+                        <div class="tab-label">Licenças</div>
+                        <div class="tab-status"><i class="fas fa-circle"></i></div>
+                    </div>
+                    <div class="tab" data-tab="patio" id="tab-patio">
+                        <div class="tab-icon"><i class="fas fa-warehouse"></i></div>
+                        <div class="tab-label">Pátio</div>
+                        <div class="tab-status"><i class="fas fa-circle"></i></div>
+                    </div>
+                    <div class="tab" data-tab="manutencao" id="tab-manutencao">
+                        <div class="tab-icon"><i class="fas fa-tools"></i></div>
+                        <div class="tab-label">Manutenção</div>
+                        <div class="tab-status"><i class="fas fa-circle"></i></div>
+                    </div>
+                    <div class="tab" data-tab="gris" id="tab-gris">
+                        <div class="tab-icon"><i class="fas fa-shield-alt"></i></div>
+                        <div class="tab-label">GRIS</div>
+                        <div class="tab-status"><i class="fas fa-circle"></i></div>
+                    </div>
+                    <div class="tab" data-tab="pronto" id="tab-pronto">
+                        <div class="tab-icon"><i class="fas fa-check"></i></div>
+                        <div class="tab-label">Liberação</div>
+                        <div class="tab-status"><i class="fas fa-circle"></i></div>
+                    </div>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Kit Despachante Tab -->
+                    <div class="tab-panel" id="panel-kitDespachante">
+                        <div class="tab-panel-header">
+                            <h2>Kit Despachante</h2>
+                            <div class="last-update" id="lastUpdate-kitDespachante">
+                                Última atualização: 01/01/2023 às 10:30
+                            </div>
+                        </div>
+                        <div class="form-container">
+                            <form id="form-kitDespachante">
+                                <!-- Números dos documentos - verticalizados -->
+                                <div class="form-group">
+                                    <label for="kit-nf-numero">Número da Nota Fiscal</label>
+                                    <input type="text" id="kit-nf-numero" name="kit-nf-numero" placeholder="Digite o número da NF">
+                                </div>
+                                <div class="form-group">
+                                    <label for="kit-atpv-numero">Número do ATPV</label>
+                                    <input type="text" id="kit-atpv-numero" name="kit-atpv-numero" placeholder="Digite o número do ATPV">
+                                </div>
+                                <div class="form-group">
+                                    <label for="kit-chassi-numero">Número do Chassi</label>
+                                    <input type="text" id="kit-chassi-numero" name="kit-chassi-numero" placeholder="Digite o número do Chassi">
+                                </div>
+
+                                <!-- Arquivos anexos - horizontalizados -->
+                                <div class="upload-container">
+                                    <div class="upload-box">
+                                        <label for="kit-nf-arquivo">Anexo Nota Fiscal</label>
+                                        <div class="custom-file-upload">
+                                            <input type="file" id="kit-nf-arquivo" name="kit-nf-arquivo" accept=".pdf" class="hidden-input">
+                                            <div class="upload-icon">
+                                                <i class="fas fa-upload"></i>
+                                            </div>
+                                        </div>
+                                        <div class="file-status" id="kit-nf-arquivo-status">Nenhum arquivo</div>
+                                    </div>
+                                    <div class="upload-box">
+                                        <label for="kit-atpv-arquivo">Anexo ATPV</label>
+                                        <div class="custom-file-upload">
+                                            <input type="file" id="kit-atpv-arquivo" name="kit-atpv-arquivo" accept=".pdf" class="hidden-input">
+                                            <div class="upload-icon">
+                                                <i class="fas fa-upload"></i>
+                                            </div>
+                                        </div>
+                                        <div class="file-status" id="kit-atpv-arquivo-status">Nenhum arquivo</div>
+                                    </div>
+                                    <div class="upload-box">
+                                        <label for="kit-chassi-arquivo">Anexo Chassi</label>
+                                        <div class="custom-file-upload">
+                                            <input type="file" id="kit-chassi-arquivo" name="kit-chassi-arquivo" accept=".pdf" class="hidden-input">
+                                            <div class="upload-icon">
+                                                <i class="fas fa-upload"></i>
+                                            </div>
+                                        </div>
+                                        <div class="file-status" id="kit-chassi-arquivo-status">Nenhum arquivo</div>
+                                    </div>
+                                </div>
+
+                                <!-- Observações -->
+                                <div class="form-group">
+                                    <label for="kit-observacoes">Observações</label>
+                                    <textarea id="kit-observacoes" name="kit-observacoes" rows="4"></textarea>
+                                </div>
+
+                                <!-- Responsável -->
+                                <div class="form-group">
+                                    <label for="kit-responsavel">Responsável</label>
+                                    <input type="text" id="kit-responsavel" name="kit-responsavel">
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">Salvar e Finalizar Etapa</button>
+                                    <button type="button" class="btn-secondary" id="btn-save-kit">Salvar Rascunho</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Fiscal Tab -->
+                    <div class="tab-panel hidden" id="panel-fiscal">
+                        <div class="tab-panel-header">
+                            <h2>Fiscal</h2>
+                            <div class="last-update" id="lastUpdate-fiscal">
+                                Sem atualizações
+                            </div>
+                        </div>
+                        <div class="form-container">
+                            <form id="form-fiscal">
+                                <!-- Placa do Patrimônio -->
+                                <div class="form-group">
+                                    <label for="fiscal-placa-patrimonio">Placa do Patrimônio</label>
+                                    <input type="text" id="fiscal-placa-patrimonio" name="fiscal-placa-patrimonio" placeholder="Digite o número da placa de patrimônio">
+                                </div>
+
+                                <!-- Foto da Placa de Patrimônio -->
+                                <div class="media-upload-container">
+                                    <label class="upload-group-label">Foto da Placa de Patrimônio</label>
+                                    <div class="media-buttons">
+                                        <div class="upload-box">
+                                            <div class="custom-file-upload">
+                                                <input type="file" id="fiscal-foto-anexo" name="fiscal-foto-anexo" accept="image/*" class="hidden-input">
+                                                <div class="upload-icon">
+                                                    <i class="fas fa-file-upload"></i>
+                                                </div>
+                                            </div>
+                                            <div class="upload-label">Anexar Foto</div>
+                                        </div>
+                                        <div class="upload-box">
+                                            <div class="custom-file-upload camera-btn" id="fiscal-foto-camera-btn">
+                                                <div class="upload-icon">
+                                                    <i class="fas fa-camera"></i>
+                                                </div>
+                                            </div>
+                                            <div class="upload-label">Tirar Foto</div>
+                                        </div>
+                                    </div>
+                                    <div class="file-status" id="fiscal-foto-status">Nenhuma foto</div>
+                                    <div class="preview-container hidden" id="fiscal-foto-preview-container">
+                                        <img id="fiscal-foto-preview" src="" alt="Prévia da foto">
+                                    </div>
+                                </div>
+
+                                <!-- Entrada NF Sistema -->
+                                <div class="form-group checkbox-group">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" id="fiscal-nf-sistema" name="fiscal-nf-sistema">
+                                        <span class="checkmark"></span>
+                                        Entrada NF no Sistema
+                                    </label>
+                                </div>
+
+                                <!-- Observações -->
+                                <div class="form-group">
+                                    <label for="fiscal-observacoes">Observações</label>
+                                    <textarea id="fiscal-observacoes" name="fiscal-observacoes" rows="4"></textarea>
+                                </div>
+
+                                <!-- Responsável -->
+                                <div class="form-group">
+                                    <label for="fiscal-responsavel">Responsável</label>
+                                    <input type="text" id="fiscal-responsavel" name="fiscal-responsavel">
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">Salvar e Finalizar Etapa</button>
+                                    <button type="button" class="btn-secondary" id="btn-save-fiscal">Salvar Rascunho</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Documentos Tab -->
+                    <div class="tab-panel hidden" id="panel-documentos">
+                        <div class="tab-panel-header">
+                            <h2>Documentos</h2>
+                            <div class="last-update" id="lastUpdate-documentos">
+                                Sem atualizações
+                            </div>
+                        </div>
+                        <div class="form-container">
+                            <form id="form-documentos">
+                                <!-- CRLV Anexo -->
+                                <div class="form-group">
+                                    <label for="doc-crlv-arquivo">CRLV</label>
+                                    <div class="upload-container single-upload">
+                                        <div class="upload-box">
+                                            <div class="custom-file-upload">
+                                                <input type="file" id="doc-crlv-arquivo" name="doc-crlv-arquivo" accept=".pdf" class="hidden-input">
+                                                <div class="upload-icon">
+                                                    <i class="fas fa-upload"></i>
+                                                </div>
+                                            </div>
+                                            <div class="upload-label">Anexar CRLV</div>
+                                            <div class="file-status" id="doc-crlv-arquivo-status">Nenhum arquivo</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Placa -->
+                                <div class="form-group">
+                                    <label for="doc-placa">Placa do Veículo</label>
+                                    <input type="text" id="doc-placa" name="doc-placa" placeholder="Digite a placa do veículo">
+                                </div>
+
+                                <!-- Observações -->
+                                <div class="form-group">
+                                    <label for="doc-observacoes">Observações</label>
+                                    <textarea id="doc-observacoes" name="doc-observacoes" rows="4"></textarea>
+                                </div>
+
+                                <!-- Responsável -->
+                                <div class="form-group">
+                                    <label for="doc-responsavel">Responsável</label>
+                                    <input type="text" id="doc-responsavel" name="doc-responsavel">
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">Salvar e Finalizar Etapa</button>
+                                    <button type="button" class="btn-secondary" id="btn-save-documentos">Salvar Rascunho</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Licenças Tab -->
+                    <div class="tab-panel hidden" id="panel-licencas">
+                        <div class="tab-panel-header">
+                            <h2>Licenças</h2>
+                            <div class="last-update" id="lastUpdate-licencas">
+                                Sem atualizações
+                            </div>
+                        </div>
+                        <div class="form-container">
+                            <form id="form-licencas">
+                                <!-- Checklist de Licenças -->
+                                <div class="form-group">
+                                    <label>Licenças do Veículo</label>
+                                    
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-container">
+                                            <input type="checkbox" id="licenca-antt" name="licenca-antt">
+                                            <span class="checkmark"></span>
+                                            Vínculo ANTT
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-container">
+                                            <input type="checkbox" id="licenca-inmetro" name="licenca-inmetro">
+                                            <span class="checkmark"></span>
+                                            Inmetro
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-container">
+                                            <input type="checkbox" id="licenca-tacografo" name="licenca-tacografo">
+                                            <span class="checkmark"></span>
+                                            Tacógrafo
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-container">
+                                            <input type="checkbox" id="licenca-aets" name="licenca-aets">
+                                            <span class="checkmark"></span>
+                                            AETS
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-container">
+                                            <input type="checkbox" id="licenca-gerenciadora" name="licenca-gerenciadora">
+                                            <span class="checkmark"></span>
+                                            Gerenciadora
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-container">
+                                            <input type="checkbox" id="licenca-tmgs" name="licenca-tmgs">
+                                            <span class="checkmark"></span>
+                                            TMGS
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Observações -->
+                                <div class="form-group">
+                                    <label for="licencas-observacoes">Observações</label>
+                                    <textarea id="licencas-observacoes" name="licencas-observacoes" rows="4"></textarea>
+                                </div>
+
+                                <!-- Responsável -->
+                                <div class="form-group">
+                                    <label for="licencas-responsavel">Responsável</label>
+                                    <input type="text" id="licencas-responsavel" name="licencas-responsavel">
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">Salvar e Finalizar Etapa</button>
+                                    <button type="button" class="btn-secondary" id="btn-save-licencas">Salvar Rascunho</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Pátio Tab -->
+                    <div class="tab-panel hidden" id="panel-patio">
+                        <div class="tab-panel-header">
+                            <h2>Pátio</h2>
+                            <div class="last-update" id="lastUpdate-patio">
+                                Sem atualizações
+                            </div>
+                        </div>
+                        <div class="form-container">
+                            <form id="form-patio">
+                                <!-- Status no Pátio -->
+                                <div class="form-group checkbox-group">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" id="patio-status" name="patio-status">
+                                        <span class="checkmark"></span>
+                                        Veículo está no pátio
+                                    </label>
+                                </div>
+
+                                <!-- Método de Chegada -->
+                                <div class="form-group">
+                                    <label>Como o veículo chegou ao pátio</label>
+                                    <div class="option-cards">
+                                        <div class="option-card" data-value="retirado">
+                                            <div class="option-icon">
+                                                <i class="fas fa-truck-pickup"></i>
+                                            </div>
+                                            <div class="option-label">Retirado</div>
+                                        </div>
+                                        <div class="option-card" data-value="entregue">
+                                            <div class="option-icon">
+                                                <i class="fas fa-truck-moving"></i>
+                                            </div>
+                                            <div class="option-label">Entregue</div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="patio-metodo" name="patio-metodo">
+                                </div>
+
+                                <!-- Observações -->
+                                <div class="form-group">
+                                    <label for="patio-observacoes">Observações</label>
+                                    <textarea id="patio-observacoes" name="patio-observacoes" rows="4"></textarea>
+                                </div>
+
+                                <!-- Responsável -->
+                                <div class="form-group">
+                                    <label for="patio-responsavel">Responsável</label>
+                                    <input type="text" id="patio-responsavel" name="patio-responsavel">
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">Salvar e Finalizar Etapa</button>
+                                    <button type="button" class="btn-secondary" id="btn-save-patio">Salvar Rascunho</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Manutenção Tab -->
+                    <div class="tab-panel hidden" id="panel-manutencao">
+                        <div class="tab-panel-header">
+                            <h2>Manutenção</h2>
+                            <div class="last-update" id="lastUpdate-manutencao">
+                                Sem atualizações
+                            </div>
+                        </div>
+                        <div class="form-container">
+                            <form id="form-manutencao">
+                                <!-- Checkboxes de Manutenção -->
+                                <div class="form-group">
+                                    <label>Itens de Verificação</label>
+                                    
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-container">
+                                            <input type="checkbox" id="manutencao-pneus" name="manutencao-pneus">
+                                            <span class="checkmark"></span>
+                                            Pneus
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-container">
+                                            <input type="checkbox" id="manutencao-fogo-pneus" name="manutencao-fogo-pneus">
+                                            <span class="checkmark"></span>
+                                            Fogo Pneus
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-container">
+                                            <input type="checkbox" id="manutencao-vacina" name="manutencao-vacina">
+                                            <span class="checkmark"></span>
+                                            Vacina
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-container">
+                                            <input type="checkbox" id="manutencao-adesivagem" name="manutencao-adesivagem">
+                                            <span class="checkmark"></span>
+                                            Adesivagem/Pintura
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Fotos do Veículo -->
+                                <div class="form-group">
+                                    <label>Fotos do Veículo</label>
+                                    <div class="fotos-grid">
+                                        <div class="fotos-row">
+                                            <!-- Frente -->
+                                            <div class="foto-camera-btn" id="foto-frente-btn">
+                                                <div class="foto-angle-icon">
+                                                    <svg viewBox="0 0 100 100" class="truck-angle">
+                                                        <path d="M50,20 L75,40 L75,70 L25,70 L25,40 Z" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+                                                        <path d="M35,70 L35,60 L65,60 L65,70" fill="none" stroke="#333" stroke-width="2"/>
+                                                        <circle cx="35" cy="75" r="5" fill="#666"/>
+                                                        <circle cx="65" cy="75" r="5" fill="#666"/>
+                                                    </svg>
+                                                </div>
+                                                <div class="foto-angle-label">Frente</div>
+                                                <div class="foto-camera-icon">
+                                                    <i class="fas fa-camera"></i>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Traseira -->
+                                            <div class="foto-camera-btn" id="foto-traseira-btn">
+                                                <div class="foto-angle-icon">
+                                                    <svg viewBox="0 0 100 100" class="truck-angle">
+                                                        <path d="M50,80 L75,60 L75,30 L25,30 L25,60 Z" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+                                                        <path d="M35,30 L35,40 L65,40 L65,30" fill="none" stroke="#333" stroke-width="2"/>
+                                                        <circle cx="35" cy="25" r="5" fill="#666"/>
+                                                        <circle cx="65" cy="25" r="5" fill="#666"/>
+                                                    </svg>
+                                                </div>
+                                                <div class="foto-angle-label">Traseira</div>
+                                                <div class="foto-camera-icon">
+                                                    <i class="fas fa-camera"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="fotos-row">
+                                            <!-- Lateral Esquerda -->
+                                            <div class="foto-camera-btn" id="foto-esquerda-btn">
+                                                <div class="foto-angle-icon">
+                                                    <svg viewBox="0 0 100 100" class="truck-angle">
+                                                        <path d="M20,40 L80,40 L80,60 L20,60 Z" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+                                                        <path d="M20,50 L30,30 L70,30 L80,50" fill="none" stroke="#333" stroke-width="2"/>
+                                                        <circle cx="30" cy="65" r="5" fill="#666"/>
+                                                        <circle cx="70" cy="65" r="5" fill="#666"/>
+                                                        <path d="M25,40 L25,60" fill="none" stroke="#555" stroke-width="1"/>
+                                                    </svg>
+                                                </div>
+                                                <div class="foto-angle-label">Lateral Esquerda</div>
+                                                <div class="foto-camera-icon">
+                                                    <i class="fas fa-camera"></i>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Lateral Direita -->
+                                            <div class="foto-camera-btn" id="foto-direita-btn">
+                                                <div class="foto-angle-icon">
+                                                    <svg viewBox="0 0 100 100" class="truck-angle">
+                                                        <path d="M20,40 L80,40 L80,60 L20,60 Z" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+                                                        <path d="M20,50 L30,30 L70,30 L80,50" fill="none" stroke="#333" stroke-width="2"/>
+                                                        <circle cx="30" cy="65" r="5" fill="#666"/>
+                                                        <circle cx="70" cy="65" r="5" fill="#666"/>
+                                                        <path d="M75,40 L75,60" fill="none" stroke="#555" stroke-width="1"/>
+                                                    </svg>
+                                                </div>
+                                                <div class="foto-angle-label">Lateral Direita</div>
+                                                <div class="foto-camera-icon">
+                                                    <i class="fas fa-camera"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Campos ocultos para armazenar dados das fotos -->
+                                    <input type="hidden" id="foto-frente-data" name="foto-frente-data">
+                                    <input type="hidden" id="foto-traseira-data" name="foto-traseira-data">
+                                    <input type="hidden" id="foto-esquerda-data" name="foto-esquerda-data">
+                                    <input type="hidden" id="foto-direita-data" name="foto-direita-data">
+                                    
+                                    <!-- Containers de prévia de imagens -->
+                                    <div class="fotos-previews">
+                                        <div class="preview-container hidden" id="foto-frente-preview-container">
+                                            <img id="foto-frente-preview" src="" alt="Prévia da foto frontal">
+                                        </div>
+                                        <div class="preview-container hidden" id="foto-traseira-preview-container">
+                                            <img id="foto-traseira-preview" src="" alt="Prévia da foto traseira">
+                                        </div>
+                                        <div class="preview-container hidden" id="foto-esquerda-preview-container">
+                                            <img id="foto-esquerda-preview" src="" alt="Prévia da foto lateral esquerda">
+                                        </div>
+                                        <div class="preview-container hidden" id="foto-direita-preview-container">
+                                            <img id="foto-direita-preview" src="" alt="Prévia da foto lateral direita">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Observações -->
+                                <div class="form-group">
+                                    <label for="manutencao-observacoes">Observações</label>
+                                    <textarea id="manutencao-observacoes" name="manutencao-observacoes" rows="4"></textarea>
+                                </div>
+
+                                <!-- Responsável -->
+                                <div class="form-group">
+                                    <label for="manutencao-responsavel">Responsável</label>
+                                    <input type="text" id="manutencao-responsavel" name="manutencao-responsavel">
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">Salvar e Finalizar Etapa</button>
+                                    <button type="button" class="btn-secondary" id="btn-save-manutencao">Salvar Rascunho</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- GRIS Tab -->
+                    <div class="tab-panel hidden" id="panel-gris">
+                        <div class="tab-panel-header">
+                            <h2>GRIS</h2>
+                            <div class="last-update" id="lastUpdate-gris">
+                                Sem atualizações
+                            </div>
+                        </div>
+                        <div class="form-container">
+                            <form id="form-gris">
+                                <!-- Rastreador -->
+                                <div class="form-group">
+                                    <label for="gris-rastreador-id">ID do Rastreador</label>
+                                    <input type="text" id="gris-rastreador-id" name="gris-rastreador-id" placeholder="Digite o ID do rastreador">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="gris-rastreador-tecnologia">Tecnologia</label>
+                                    <input type="text" id="gris-rastreador-tecnologia" name="gris-rastreador-tecnologia" placeholder="Digite a tecnologia do rastreador">
+                                </div>
+                                
+                                <!-- Checkboxes GRIS -->
+                                <div class="form-group">
+                                    <label>Itens de Segurança</label>
+                                    
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-container">
+                                            <input type="checkbox" id="gris-trava-roda" name="gris-trava-roda">
+                                            <span class="checkmark"></span>
+                                            Trava 5º Roda
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-container">
+                                            <input type="checkbox" id="gris-trava-bau" name="gris-trava-bau">
+                                            <span class="checkmark"></span>
+                                            Trava de Baú
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-container">
+                                            <input type="checkbox" id="gris-dispositivo" name="gris-dispositivo">
+                                            <span class="checkmark"></span>
+                                            Dispositivo
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-container">
+                                            <input type="checkbox" id="gris-localizador" name="gris-localizador">
+                                            <span class="checkmark"></span>
+                                            Localizador
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-container">
+                                            <input type="checkbox" id="gris-rfcco" name="gris-rfcco">
+                                            <span class="checkmark"></span>
+                                            RF/CCO
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Observações -->
+                                <div class="form-group">
+                                    <label for="gris-observacoes">Observações</label>
+                                    <textarea id="gris-observacoes" name="gris-observacoes" rows="4"></textarea>
+                                </div>
+
+                                <!-- Responsável -->
+                                <div class="form-group">
+                                    <label for="gris-responsavel">Responsável</label>
+                                    <input type="text" id="gris-responsavel" name="gris-responsavel">
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">Salvar e Finalizar Etapa</button>
+                                    <button type="button" class="btn-secondary" id="btn-save-gris">Salvar Rascunho</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Liberação Tab -->
+                    <div class="tab-panel hidden" id="panel-pronto">
+                        <div class="tab-panel-header">
+                            <h2>Liberação Final do Veículo</h2>
+                            <div class="last-update" id="lastUpdate-pronto">
+                                Sem atualizações
+                            </div>
+                        </div>
+                        <div class="form-container">
+                            <form id="form-pronto">
+                                <div class="resumo-message">
+                                    <i class="fas fa-info-circle"></i> 
+                                    Confira todas as informações do veículo antes de liberá-lo. 
+                                    Clique em cada seção para expandir e visualizar os detalhes.
+                                </div>
+                                
+                                <!-- Resumo Kit Despachante -->
+                                <div class="resumo-section" id="resumo-kitDespachante">
+                                    <div class="resumo-header">
+                                        <div class="resumo-title">
+                                            <i class="fas fa-file-contract"></i> Kit Despachante
+                                        </div>
+                                        <div class="resumo-status">
+                                            <span class="status-badge status-complete" id="status-kitDespachante">
+                                                <i class="fas fa-check-circle"></i> Concluído
+                                            </span>
+                                            <button type="button" class="btn-toggle-section">
+                                                <i class="fas fa-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="resumo-content">
+                                        <div class="resumo-data">
+                                            <div class="resumo-item">
+                                                <span class="resumo-label">Número NF:</span>
+                                                <span class="resumo-value" id="resumo-kit-nf">-</span>
+                                            </div>
+                                            <div class="resumo-item">
+                                                <span class="resumo-label">Número ATPV:</span>
+                                                <span class="resumo-value" id="resumo-kit-atpv">-</span>
+                                            </div>
+                                            <div class="resumo-item">
+                                                <span class="resumo-label">Número Chassi:</span>
+                                                <span class="resumo-value" id="resumo-kit-chassi">-</span>
+                                            </div>
+                                            <div class="resumo-item">
+                                                <span class="resumo-label">Arquivos:</span>
+                                                <span class="resumo-value" id="resumo-kit-arquivos">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Resumo Fiscal -->
+                                <div class="resumo-section" id="resumo-fiscal">
+                                    <div class="resumo-header">
+                                        <div class="resumo-title">
+                                            <i class="fas fa-balance-scale"></i> Fiscal
+                                        </div>
+                                        <div class="resumo-status">
+                                            <span class="status-badge" id="status-fiscal">
+                                                <i class="fas fa-circle"></i> Pendente
+                                            </span>
+                                            <button type="button" class="btn-toggle-section">
+                                                <i class="fas fa-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="resumo-content">
+                                        <div class="resumo-data">
+                                            <div class="resumo-item">
+                                                <span class="resumo-label">Placa Patrimônio:</span>
+                                                <span class="resumo-value" id="resumo-fiscal-placa">-</span>
+                                            </div>
+                                            <div class="resumo-item">
+                                                <span class="resumo-label">Entrada NF Sistema:</span>
+                                                <span class="resumo-value" id="resumo-fiscal-nf-sistema">-</span>
+                                            </div>
+                                            <div class="resumo-item">
+                                                <span class="resumo-label">Foto Placa:</span>
+                                                <span class="resumo-value" id="resumo-fiscal-foto">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Resumo Documentos -->
+                                <div class="resumo-section" id="resumo-documentos">
+                                    <div class="resumo-header">
+                                        <div class="resumo-title">
+                                            <i class="fas fa-file-alt"></i> Documentos
+                                        </div>
+                                        <div class="resumo-status">
+                                            <span class="status-badge" id="status-documentos">
+                                                <i class="fas fa-circle"></i> Pendente
+                                            </span>
+                                            <button type="button" class="btn-toggle-section">
+                                                <i class="fas fa-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="resumo-content">
+                                        <div class="resumo-data">
+                                            <div class="resumo-item">
+                                                <span class="resumo-label">Placa Veículo:</span>
+                                                <span class="resumo-value" id="resumo-doc-placa">-</span>
+                                            </div>
+                                            <div class="resumo-item">
+                                                <span class="resumo-label">CRLV:</span>
+                                                <span class="resumo-value" id="resumo-doc-crlv">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Resumo Licenças -->
+                                <div class="resumo-section" id="resumo-licencas">
+                                    <div class="resumo-header">
+                                        <div class="resumo-title">
+                                            <i class="fas fa-id-card"></i> Licenças
+                                        </div>
+                                        <div class="resumo-status">
+                                            <span class="status-badge" id="status-licencas">
+                                                <i class="fas fa-circle"></i> Pendente
+                                            </span>
+                                            <button type="button" class="btn-toggle-section">
+                                                <i class="fas fa-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="resumo-content">
+                                        <div class="resumo-data">
+                                            <div class="resumo-item">
+                                                <span class="resumo-label">Licenças Obtidas:</span>
+                                                <span class="resumo-value" id="resumo-licencas-lista">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Resumo Pátio -->
+                                <div class="resumo-section" id="resumo-patio">
+                                    <div class="resumo-header">
+                                        <div class="resumo-title">
+                                            <i class="fas fa-warehouse"></i> Pátio
+                                        </div>
+                                        <div class="resumo-status">
+                                            <span class="status-badge" id="status-patio">
+                                                <i class="fas fa-circle"></i> Pendente
+                                            </span>
+                                            <button type="button" class="btn-toggle-section">
+                                                <i class="fas fa-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="resumo-content">
+                                        <div class="resumo-data">
+                                            <div class="resumo-item">
+                                                <span class="resumo-label">Status Pátio:</span>
+                                                <span class="resumo-value" id="resumo-patio-status">-</span>
+                                            </div>
+                                            <div class="resumo-item">
+                                                <span class="resumo-label">Método Chegada:</span>
+                                                <span class="resumo-value" id="resumo-patio-metodo">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Resumo Manutenção -->
+                                <div class="resumo-section" id="resumo-manutencao">
+                                    <div class="resumo-header">
+                                        <div class="resumo-title">
+                                            <i class="fas fa-tools"></i> Manutenção
+                                        </div>
+                                        <div class="resumo-status">
+                                            <span class="status-badge" id="status-manutencao">
+                                                <i class="fas fa-circle"></i> Pendente
+                                            </span>
+                                            <button type="button" class="btn-toggle-section">
+                                                <i class="fas fa-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="resumo-content">
+                                        <div class="resumo-data">
+                                            <div class="resumo-item">
+                                                <span class="resumo-label">Itens Verificados:</span>
+                                                <span class="resumo-value" id="resumo-manutencao-itens">-</span>
+                                            </div>
+                                            <div class="resumo-item">
+                                                <span class="resumo-label">Fotos:</span>
+                                                <span class="resumo-value" id="resumo-manutencao-fotos">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Resumo GRIS -->
+                                <div class="resumo-section" id="resumo-gris">
+                                    <div class="resumo-header">
+                                        <div class="resumo-title">
+                                            <i class="fas fa-shield-alt"></i> GRIS
+                                        </div>
+                                        <div class="resumo-status">
+                                            <span class="status-badge" id="status-gris">
+                                                <i class="fas fa-circle"></i> Pendente
+                                            </span>
+                                            <button type="button" class="btn-toggle-section">
+                                                <i class="fas fa-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="resumo-content">
+                                        <div class="resumo-data">
+                                            <div class="resumo-item">
+                                                <span class="resumo-label">ID Rastreador:</span>
+                                                <span class="resumo-value" id="resumo-gris-rastreador-id">-</span>
+                                            </div>
+                                            <div class="resumo-item">
+                                                <span class="resumo-label">Tecnologia:</span>
+                                                <span class="resumo-value" id="resumo-gris-rastreador-tec">-</span>
+                                            </div>
+                                            <div class="resumo-item">
+                                                <span class="resumo-label">Itens Segurança:</span>
+                                                <span class="resumo-value" id="resumo-gris-itens">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Responsável Final -->
+                                <div class="form-group">
+                                    <label for="pronto-responsavel">Responsável pela Liberação</label>
+                                    <input type="text" id="pronto-responsavel" name="pronto-responsavel" required>
+                                </div>
+                                
+                                <!-- Observações Finais -->
+                                <div class="form-group">
+                                    <label for="pronto-observacoes">Observações Finais</label>
+                                    <textarea id="pronto-observacoes" name="pronto-observacoes" rows="4"></textarea>
+                                </div>
+                                
+                                <!-- Botão de Liberação Final -->
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary btn-liberacao">
+                                        <i class="fas fa-paper-plane"></i> Enviar para Liberação
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/status.js"></script>
+    <script src="js/trabalho.js"></script>
+    <script src="js/liberacao.js"></script>
+</body>
+</html> 
